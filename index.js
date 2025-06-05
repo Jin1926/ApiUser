@@ -103,7 +103,9 @@ app.post('/api/solicitar-comic', async (req, res) => {
         res.status(500).json({ message: 'Error del servidor' });
     }
 });
-
+app.get('/ping', (req, res) => {
+  res.json({ status: 'ok' });
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
