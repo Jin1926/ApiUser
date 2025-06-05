@@ -1,4 +1,3 @@
-require('dotenv').config(); // Importa dotenv al inicio
 // const { Pool } = require('pg');
 
 // const pool = new Pool({
