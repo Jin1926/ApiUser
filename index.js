@@ -103,6 +103,38 @@ app.post('/api/solicitar-comic', async (req, res) => {
         res.status(500).json({ message: 'Error del servidor' });
     }
 });
+// Obtener usuario por correo
+app.post('/api/user', async (req, res) => {
+  const { correo } = req.body;
+
+  if (!correo) {
+    return res.status(400).json({ message: 'El correo es requerido' });
+  }
+
+  try {
+    const result = await pool.query('SELECT * FROM usuarios WHERE email = $1', [correo]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    const usuario = result.rows[0];
+
+    res.status(200).json({
+      message: 'Usuario encontrado',
+      usuario: {
+        id: usuario.id,
+        nombre: usuario.username,
+        correo: usuario.email,
+        fecha_nacimiento: usuario.fecha_nacimiento
+      }
+    });
+  } catch (err) {
+    console.error('Error al obtener usuario:', err);
+    res.status(500).json({ message: 'Error del servidor' });
+  }
+});
+
 app.get('/ping', (req, res) => {
   res.json({ status: 'ok' });
 });
